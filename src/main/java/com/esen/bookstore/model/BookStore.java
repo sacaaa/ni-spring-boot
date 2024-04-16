@@ -1,5 +1,6 @@
 package com.esen.bookstore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +26,7 @@ public class BookStore {
     private Double priceModifier, moneyInCashRegister;
 
     @ElementCollection(fetch = FetchType.EAGER)
+    @JsonIgnore
     private Map<Book, Integer> inventory;
 
 }
