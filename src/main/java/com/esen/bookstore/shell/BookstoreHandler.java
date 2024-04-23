@@ -44,7 +44,7 @@ public class BookstoreHandler {
                            @ShellOption(defaultValue = ShellOption.NULL) String location,
                            @ShellOption(defaultValue = ShellOption.NULL) Double priceModifier,
                            @ShellOption(defaultValue = ShellOption.NULL) Double moneyInCashRegister) {
-        bookstoreService.updateBook(id, location, priceModifier, moneyInCashRegister);
+        bookstoreService.updateBookstore(id, location, priceModifier, moneyInCashRegister);
     }
 
 }

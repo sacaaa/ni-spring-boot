@@ -40,7 +40,7 @@ public class BookstoreService {
         bookstoreRepository.delete(bookstore);
     }
 
-    public void updateBook(Long id, String location, Double priceModifier, Double moneyInCashRegister) {
+    public void updateBookstore(Long id, String location, Double priceModifier, Double moneyInCashRegister) {
         if (Stream.of(location, priceModifier, moneyInCashRegister).allMatch(Objects::isNull)) {
             throw new UnsupportedOperationException("There's nothing to update");
         }
