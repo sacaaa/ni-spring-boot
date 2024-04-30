@@ -47,4 +47,19 @@ public class BookstoreHandler {
         bookstoreService.updateBookstore(id, location, priceModifier, moneyInCashRegister);
     }
 
+    @ShellMethod(key = "get_bookstore_stock", value = "Get bookstore stock")
+    public String getBookStoreStock(Long id) {
+        return bookstoreService.getStock(id)
+                .entrySet()
+                .stream()
+                .map(bookIntegerEntry -> "Book ID: %d, Book title: %s, Quantity: %d".formatted(
+                        bookIntegerEntry.getKey().getId(), bookIntegerEntry.getKey().getTitle(), bookIntegerEntry.getValue()
+                )).collect(Collectors.joining(System.lineSeparator()));
+    }
+
+    @ShellMethod(key = "add_to_stock", value = "Add a specified book with quantity to bookstore stock")
+    public void addToStock(Long bookstoreId, Long bookId, Long quantity) {
+        bookstoreService.addStock(bookstoreId, bookId, quantity);
+    }
+
 }

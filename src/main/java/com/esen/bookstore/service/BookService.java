@@ -1,11 +1,14 @@
 package com.esen.bookstore.service;
 
 import com.esen.bookstore.model.Book;
+import com.esen.bookstore.model.BookStore;
 import com.esen.bookstore.repository.BookRepository;
+import com.esen.bookstore.repository.BookstoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -15,6 +18,7 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final BookstoreService bookstoreService;
+    private final BookstoreRepository bookstoreRepository;
 
     public void save(Book book) {
         bookRepository.save(book);
@@ -57,4 +61,11 @@ public class BookService {
 
         bookRepository.save(book);
     }
+
+    public List<BookStore> findBookstoresWithBookInInventory(Book book) {
+        return bookstoreRepository.findAll().stream()
+                .filter(bookstore -> bookstore.getInventory().containsKey(book))
+                .toList();
+    }
+
 }

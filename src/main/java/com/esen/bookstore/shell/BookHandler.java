@@ -1,6 +1,7 @@
 package com.esen.bookstore.shell;
 
 import com.esen.bookstore.model.Book;
+import com.esen.bookstore.repository.BookRepository;
 import com.esen.bookstore.service.BookService;
 import com.esen.bookstore.service.BookstoreService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 public class BookHandler {
 
     private final BookService bookService;
+    private final BookRepository bookRepository;
 
     @ShellMethod(key = "create_book", value = "Create a book")
     public void createBook(String title, String author, String publisher, Double price) {
@@ -48,6 +50,18 @@ public class BookHandler {
                            @ShellOption(defaultValue = ShellOption.NULL) String publisher,
                            @ShellOption(defaultValue = ShellOption.NULL) Double price) {
         bookService.updateBook(id, title, author, publisher, price);
+    }
+
+    @ShellMethod(key = "find_book_with_prices", value = "Find book with price in bookstores")
+    public String findBookWithPrice(Long id) {
+        var book = bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cannot find book"));
+
+        return bookService.findBookstoresWithBookInInventory(book).stream()
+                .map(bookstore ->"Bookstore ID: %d, Location: %s, Price modifier: %fx, Default price: %f Ft, Modified price: %f Ft".formatted(
+                        bookstore.getId(), bookstore.getLocation(), bookstore.getPriceModifier(), book.getPrice(),
+                        book.getPrice() * bookstore.getPriceModifier()
+                )).collect(Collectors.joining(System.lineSeparator()));
     }
 
 }
